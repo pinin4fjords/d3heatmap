@@ -1,4 +1,6 @@
 #' @import htmlwidgets
+#' @importFrom grDevices col2rgb rgb
+#' @importFrom stats as.dendrogram dendrapply dist hclust is.leaf order.dendrogram reorder sd
 NULL
 
 `%||%` <- function(a, b) {
@@ -213,7 +215,7 @@ d3heatmap <- function(x,
       stop("Col dendrogram is the wrong size")
   } else {
     if (!is.null(Colv) && !is.na(Colv) && !identical(Colv, FALSE))
-      warning("Invalid value for Rowv, ignoring")
+      warning("Invalid value for Colv, ignoring")
     Colv <- NULL
     colInd <- 1:nc
   }
@@ -239,6 +241,8 @@ d3heatmap <- function(x,
   ## reorder x (and others)
   ##=======================
   x <- x[rowInd, colInd]
+  if (!missing(cellnote))
+    cellnote <- cellnote[rowInd, colInd]
 
   
   ## Dendrograms - Update the labels and change to dendToTree
